@@ -5,6 +5,12 @@
  */
 package vista;
 
+import cliente.ClienteSend;
+import java.io.IOException;
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author javier
@@ -63,7 +69,7 @@ public class Vista extends javax.swing.JFrame {
 
         jLabel6.setText("Sexo");
 
-        jButton1.setText("Enviat");
+        jButton1.setText("Enviar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -147,7 +153,15 @@ public class Vista extends javax.swing.JFrame {
         String nacimiento = txtNacimiento.getText();
         String sexo = txtSexo.getText();
         
-//        Envio a sockets datos
+        try {
+            //        Envio a sockets datos
+            new ClienteSend().enviar(paterno, materno, nombre, fecha, nacimiento, sexo);
+            
+        } catch (SocketException ex) {
+            Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
