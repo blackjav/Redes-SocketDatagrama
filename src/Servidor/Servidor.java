@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,14 +58,7 @@ public class Servidor {
         String mLugar = new String(bufflugar);
         String mSexo = new String(buffsexo);
         
-        System.out.println(mPaterno);
-        System.out.println(mMaterno);
-        System.out.println(mNombre);
-        System.out.println(mNacimiento);
-        System.out.println(mLugar);
-        System.out.println(mSexo);
-        
-        
+        JOptionPane.showMessageDialog(null, "*Nombre : "+mNombre+"\n*Apellido Paterno : "+mPaterno+"\n*Apellido Materno : "+mMaterno+ "\n*RFC: '" + new ToRFC(mPaterno,mMaterno,mNombre,mNacimiento,mLugar,mSexo).cacluate() +"'");
         mySocket.close( ); 
       }
         

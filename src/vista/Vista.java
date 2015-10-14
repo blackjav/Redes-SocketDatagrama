@@ -8,8 +8,10 @@ package vista;
 import cliente.ClienteSend;
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +24,9 @@ public class Vista extends javax.swing.JFrame {
      */
     public Vista() {
         initComponents();
+        this.setTitle("Calculo de RFC (Cliente)");
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**
@@ -39,14 +44,10 @@ public class Vista extends javax.swing.JFrame {
         txtMaterno = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtDate = new datechooser.beans.DateChooserCombo();
-        txtNacimiento = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txtSexo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,10 +65,6 @@ public class Vista extends javax.swing.JFrame {
         jLabel3.setText("Nombre");
 
         jLabel4.setText("Fecha de Nacimiento");
-
-        jLabel5.setText("Lugar de Nacimiento");
-
-        jLabel6.setText("Sexo");
 
         jButton1.setText("Enviar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -88,19 +85,15 @@ public class Vista extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel4))
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtName)
                             .addComponent(txtMaterno)
-                            .addComponent(txtPaterno)
-                            .addComponent(txtNacimiento)
-                            .addComponent(txtSexo)))
+                            .addComponent(txtPaterno)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
+                        .addGap(150, 150, 150)
                         .addComponent(jButton1)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -125,16 +118,8 @@ public class Vista extends javax.swing.JFrame {
                     .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,18 +135,28 @@ public class Vista extends javax.swing.JFrame {
         String materno = txtMaterno.getText();
         String nombre = txtName.getText();
         String fecha = txtDate.getText();
-        String nacimiento = txtNacimiento.getText();
-        String sexo = txtSexo.getText();
-        
-        try {
-            //        Envio a sockets datos
-            new ClienteSend().enviar(paterno, materno, nombre, fecha, nacimiento, sexo);
+      
+        if(!(txtPaterno.getText().isEmpty() || txtMaterno.getText().isEmpty() || txtName.getText().isEmpty() || txtDate.getText().isEmpty()))
+        {
             
-        } catch (SocketException ex) {
-            Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+
+            try {
+                //        Envio a sockets datos
+                new ClienteSend().enviar(paterno, materno, nombre, fecha, "Aqui no hay nada", "Aqui no hay nada");
+
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "No pudimos procesar su solicitud, revise que el servidor este corriendo! ");
+            }
+
+            txtPaterno.setText("");
+            txtMaterno.setText("");
+            txtName.setText("");
+            txtDate.setText("");
         }
+        else
+            JOptionPane.showMessageDialog(this, "Uno o mas campos estan vacios ");
+   
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -207,13 +202,9 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private datechooser.beans.DateChooserCombo txtDate;
     private javax.swing.JTextField txtMaterno;
-    private javax.swing.JTextField txtNacimiento;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPaterno;
-    private javax.swing.JTextField txtSexo;
     // End of variables declaration//GEN-END:variables
 }
